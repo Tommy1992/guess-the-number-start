@@ -25,26 +25,46 @@ check if guess is correct or too high/low and print:
 """
 
 import random as rnd
+from art import logo
+guesses_left = 10
 
-num = rnd.randint(1,100)
 
-diff = input("Choose a difficulty. Type 'easy' or 'hard': ")
-if diff == "easy":
-  guesses_left = 10
-  print (f"You have {guesses_left} guesses left.\n")
-elif diff == "hard":
-  guesses_left = 5
-  print (f"You have {guesses_left} guesses left.\n")
+def set_diff():
+  """ Asks user for difficulty and sets the guesses left."""
+  diff = input("Choose a difficulty. Type 'easy' or 'hard': ")
+  if diff == "easy":
+    guesses_left = 10
+    print (f"You have {guesses_left} guesses left.\n")
+  elif diff == "hard":
+    guesses_left = 5
+    print (f"You have {guesses_left} guesses left.\n")
 
-while guesses_left > 0:
-  if guesses_left == 0:
-    print ("You've run out of guesses, you lose.")
-  guesses_left -= 1
-  current_guess = input("Make a guess: ")
-  if int(current_guess) > num:
-    print (f"Too high.\nYou have {guesses_left} guesses left.\nGuess again.")
-  elif int(current_guess) < num:
-    print (f"Too low.\nYou have {guesses_left} guesses left.\nGuess again.")
-  elif int(current_guess) == num:
-    print ("You got it! The answer was " + str(num) + ".")
-    guesses_left = 0
+current_guess = 0
+
+def check_answer(guesses_left, current_guess, num):
+  while guesses_left > 0:
+    current_guess = input("Make a guess: ")
+    if int(current_guess) > num:
+      print (f"Too high.")
+    elif int(current_guess) < num:
+      print (f"Too low.")
+    elif int(current_guess) == num:
+      print ("You got it! The answer was " + str(num) + ".")
+      return
+    guesses_left -= 1
+    if guesses_left == 0:
+      print("You've run out of guesses, you lose.")
+      return
+    print (f"You have {guesses_left} guesses left.")
+
+
+def game():
+  print (logo)
+  print("Welcome to the Number Guessing Game!")
+  print("I'm thinking of a number between 1 and 100.")
+  num = rnd.randint(1,100)
+  print(f"Pssst, the correct answer is {num}")
+  set_diff()
+  check_answer(guesses_left, current_guess, num)
+
+game()
